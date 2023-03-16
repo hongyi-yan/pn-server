@@ -1,13 +1,13 @@
 // log in to ECR
-$(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 017359606234.dkr.ecr.us-east-1.amazonaws.com)
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 017359606234.dkr.ecr.us-east-1.amazonaws.com
 
 // build the docker image
-docker build -t pn-server:1.0 .
+docker build -t pn-server:latest .
 
 // tag the docker imagedocker
 // docker tag <IMAGE_NAME> <ECR_URL>/pn-server
-docker tag pn-server:1.0 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server
+docker tag pn-server:latest 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest
 
 // push to ECR
 // docker push <ECR_URL>/pn-server
-docker push 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server
+docker push 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest
