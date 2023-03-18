@@ -54,10 +54,10 @@ pipeline {
                 sh 'docker build -t ${ECR_IMAGE}:${COMMIT_HASH} .'
 
                 echo "Tag Docker images"
-                sh 'docker tag ${ECR_IMAGE}:${COMMIT_HASH} ${ECR_URL}'
+                sh 'docker tag ${ECR_IMAGE}:${COMMIT_HASH} ${ECR_URL}:COMMIT_HASH'
 
                 echo "Push image to ECR"
-                sh 'docker push ${ECR_URL}'
+                sh 'docker push ${ECR_URL}:COMMIT_HASH'
             }
         }
 
