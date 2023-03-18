@@ -38,7 +38,7 @@ pipeline {
         stage('login to ECR') {
             steps {
                 echo "Login to ECR"
-                withAWS(credentials: ec2, region: AWS_REGION) {
+                withAWS(credentials: AWS_CREDENTIAL, region: AWS_REGION) {
                     sh 'aws ecr get-login-password \
                     --region ${AWS_REGION} | docker login \
                     --username AWS \
@@ -68,7 +68,7 @@ pipeline {
                     sh "printf '[{"name":"petServer","imageUri":"%s"}] ${ECR_URL}/${ECR_REPO}:${COMMIT_HASH} > imagedefinitions.json"
 
                     
-                    withAWS(credentials: 'ec2', region: 'us-east-1') {
+                    withAWS(credentials: AWS_CREDENTIAL, region: AWS_REGION) {
                     sh "aws ecs register-task-definition --family ${TASK_DEFINITION} --container-definitions file://imagedefinitions.json"
                     }
                 }
