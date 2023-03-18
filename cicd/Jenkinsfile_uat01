@@ -41,22 +41,23 @@ pipeline {
             steps {
                 echo "Login to ECR"
                 withAWS(credentials: 'ec2', region: 'us-east-1') {
-                    echo "login aws"
-                    sh 'aws ecr get-login-password --region ${AWS_REGION}'
-                                    
-                    echo "Build Docker images"
-                    sh 'docker build -t ${ECR_REPO}:${COMMIT_HASH} .'
-
-                    echo "Tag Docker images"
-                    sh 'docker tag ${ECR_REPO}:${COMMIT_HASH} ${ECR_URL}'
-
-                    echo "Push image to ECR"
-                    sh 'docker push ${ECR_URL}'
+                    sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_URL}'
                 }
             }
         
         }
+        stage('Build and Push Docker Image') {
+            steps {               
+                echo "Build Docker images"
+                sh 'docker build -t ${ECR_REPO}:${COMMIT_HASH} .'
 
+                echo "Tag Docker images"
+                sh 'docker tag ${ECR_REPO}:${COMMIT_HASH} ${ECR_URL}'
+
+                echo "Push image to ECR"
+                sh 'docker push ${ECR_URL}'
+            }
+        }
 
 
 
