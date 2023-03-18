@@ -64,50 +64,15 @@ pipeline {
             steps {
                 script {
                     withAWS(credentials: AWS_CREDENTIAL, region: AWS_REGION) {
-                        sh 'asw ecs update-service \
-                        --cluster ${CLUSTER} \
-                        --service ${SERVICE} \
-                        --task-difinition ${TASK_DEFINITION} \
-                        --force-new-deployment'
+                        sh 'aws ecs update-service \
+                            --cluster ${CLUSTER} \
+                            --service ${SERVICE} \
+                            --task-difinition ${TASK_DEFINITION} \
+                            --force-new-deployment'
                     }
                 }
             }
         }
-        
-
-
-        
-        // stage('Build') {
-        //     steps {
-        //         echo "Building"
-        //         sh 'npm run build'
-        //     }
-        // }
-        
-        // stage('Test') {
-        //     steps {
-        //         echo "testing"
-        //     }
-        // }
-        
-        // stage('Install AWS CLI') {
-        //     steps {
-        //         echo "Installing AWS CLI"
-        //         //delete aws version checking
-        //         //sh 'aws --version'
-        //         sh 'apt-get update'
-        //         sh 'apt install python3-pip -y'
-        //         sh 'pip3 install awscli --upgrade'
-        //     }
-        // }
-        
-        //  stage('Deploy to UAT') {
-        //     steps {
-        //         echo "Deploy to UAT"
-        //         deployToS3(ENVIRONMENT)
-        //     }
-        // }
-        
     }
 
     post {
