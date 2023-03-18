@@ -17,7 +17,6 @@ pipeline {
         ECR_IMAGE = 'pn-server'
         COMMIT_HASH = 'latest'
         ECR_PASS = '017359606234.dkr.ecr.us-east-1.amazonaws.com'
-        ECR_URL = '${ECR_PASS}/${ECR_IMAGE}'
         
         CLUSTER = 'petCluster01'
         SERVICE = 'petService'
@@ -64,12 +63,12 @@ pipeline {
         stage('Update ECS Service') {
             steps {
                 script {
-                    // Generate task definition JSON file with updated image URI
-                    sh "printf '[{"name":"petServer","imageUri":"%s"}] ${ECR_URL}/${ECR_REPO}:${COMMIT_HASH} > imagedefinitions.json"
-
-                    
                     withAWS(credentials: AWS_CREDENTIAL, region: AWS_REGION) {
-                    sh "aws ecs register-task-definition --family ${TASK_DEFINITION} --container-definitions file://imagedefinitions.json"
+                        sh 'asw ecs update-service \
+                        --cluster ${CLUSTER} \
+                        --service ${SERVICE} \
+                        --task-difinition ${TASK_DEFINITION} \
+                        --force-new-deployment'
                     }
                 }
             }
