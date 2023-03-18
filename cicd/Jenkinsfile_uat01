@@ -17,7 +17,7 @@ pipeline {
         ECR_IMAGE = 'pn-server'
         COMMIT_HASH = 'latest'
         ECR_PASS = '017359606234.dkr.ecr.us-east-1.amazonaws.com'
-        ECR_URL = '$${ECR_PASS}/${ECR_IMAGE}'
+        ECR_URL = '${ECR_PASS}/${ECR_IMAGE}'
         
         CLUSTER = 'petCluster01'
         SERVICE = 'petService'
