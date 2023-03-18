@@ -38,7 +38,7 @@ pipeline {
                 sh 'docker build -t ${ECR_REPO} .'
 
                 echo "Tag Docker images"
-                sh 'docker tag ${ECR_REPO} ${ECR_URL}'
+                sh 'docker.tag(${ECR_REPO}, ${ECR_URL})'
 
                 echo "Push image to ECR"
                 sh 'docker push ${ECR_URL}'
