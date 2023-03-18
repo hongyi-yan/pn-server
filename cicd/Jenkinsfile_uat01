@@ -14,7 +14,6 @@ pipeline {
     environment {
         ENVIRONMENT = 'uat'
         BRANCH_UAT = 'dev'
-        EC2_CREDENTIAL = 'ec2'
         AWS_REGION = 'us-east-1'
         ECR_REPO = 'pn-server'
         COMMIT_HASH = 'latest'
