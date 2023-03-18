@@ -1,0 +1,88 @@
+pipeline {
+
+    // agent {
+    //     docker {   
+    //         image 'node:16.18.1'
+    //     }  
+    // }
+
+    // triggers {
+    //     cron '''TZ=Australia/Sydney
+    //     H H(9-17)/3 * * 1-7'''
+    // }
+
+    environment {
+        ENVIRONMENT = 'uat'
+        BRANCH_UAT = 'dev'
+        EC2_CREDENTIAL = 'ec2'
+        IMAGE_NAME = 'pn-server:latest'
+        TASK_DEFINITION = 'petServer'
+        WORKSPACE_PATH = '/home/root/jenkins_home/workspace/test-getrepo/build'
+    }
+
+    //options {
+        //maximum archieved artifacts
+       // echo "set log rotation"
+    //}
+
+
+    stages {
+        stage('Login to ECR') {
+            steps {
+                echo "Login to ECR"
+                sh '$(aws ecr get-login --no-include-email --region us-east-1)'
+            }
+        }
+
+
+
+        
+        // stage('Build') {
+        //     steps {
+        //         echo "Building"
+        //         sh 'npm run build'
+        //     }
+        // }
+        
+        // stage('Test') {
+        //     steps {
+        //         echo "testing"
+        //     }
+        // }
+        
+        // stage('Install AWS CLI') {
+        //     steps {
+        //         echo "Installing AWS CLI"
+        //         //delete aws version checking
+        //         //sh 'aws --version'
+        //         sh 'apt-get update'
+        //         sh 'apt install python3-pip -y'
+        //         sh 'pip3 install awscli --upgrade'
+        //     }
+        // }
+        
+        //  stage('Deploy to UAT') {
+        //     steps {
+        //         echo "Deploy to UAT"
+        //         deployToS3(ENVIRONMENT)
+        //     }
+        // }
+        
+    }
+
+    post {
+    
+        always {
+        cleanWs()
+				sh 'ls -la'
+        }
+        
+        success{
+            echo "In post-success"
+        }
+        failure {
+            echo "In post-failure"
+
+        }
+    }
+}
