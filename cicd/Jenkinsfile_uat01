@@ -2,10 +2,6 @@ pipeline {
 
     agent any
 
-    //     docker {   
-    //         image 'node:16.18.1'
-    //     }  
-
     // triggers {
     //     cron '''TZ=Australia/Sydney
     //     H H(9-17)/3 * * 1-7'''
@@ -18,14 +14,10 @@ pipeline {
         ECR_REPO = 'pn-server'
         COMMIT_HASH = 'latest'
         ECR_URL = '017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest'
+        //
         TASK_DEFINITION = 'petServer'
         WORKSPACE_PATH = '/home/root/jenkins_home/workspace/test-getrepo/build'
     }
-
-
-
-
-    
 
     stages {
         stage('Install AWS CLI') {
@@ -46,6 +38,7 @@ pipeline {
             }
         
         }
+
         stage('Build and Push Docker Image') {
             steps {               
                 echo "Build Docker images"
@@ -59,6 +52,20 @@ pipeline {
             }
         }
 
+        stage() {
+            steps {
+                script {
+                    // Generate task definition JSON file with updated image URI
+                    sh "printf '[{\"name\":\"petServer\",\"imageUri\":\"${ECR_URL}/${ECR_REPO}:${COMMIT_HASH}\"}]' > imagedefinitions.json"
+
+                    // Update ECS task definition with new image URI
+                    withAWS(credentials: 'ec2', region: 'us-east-1') {
+                        sh "aws ecs register-task-definition --family ${TASK_DEFINITION} --container-definitions file://imagedefinitions.json"
+                    }
+                }
+            }
+        }
+        }
 
 
         
