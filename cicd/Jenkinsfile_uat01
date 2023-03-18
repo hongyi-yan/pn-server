@@ -22,12 +22,18 @@ pipeline {
         WORKSPACE_PATH = '/home/root/jenkins_home/workspace/test-getrepo/build'
     }
 
-    //options {
-        //maximum archieved artifacts
-       // echo "set log rotation"
-    //}
 
+    stage('Install AWS CLI') {
+        steps {
+            echo "Installing AWS CLI"
+            sh 'apt-get update'
+            sh 'apt install python3-pip -y'
+            sh 'pip3 install awscli --upgrade'
+            aws --version
+        }
+    }
 
+    
 
     stages {
         stage('login to ECR') {
