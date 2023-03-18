@@ -13,10 +13,15 @@ pipeline {
 
     environment {
         ENVIRONMENT = 'uat'
+        EC2_CREDENTIAL = 'ec2'
+        AWS_REGION = 'us-east-1'
+        ECR_REPO = 'pn-server'
+        COMMIT_HASH = 'latest'
+        ECR_URL = '017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest'
+        
+
         BRANCH_UAT = 'dev'
         EC2_CREDENTIAL = 'ec2'
-        ECR_REPO = 'pn-server:latest'
-        ECR_URL = 'pn-server:latest 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest'
         TASK_DEFINITION = 'petServer'
         WORKSPACE_PATH = '/home/root/jenkins_home/workspace/test-getrepo/build'
     }
@@ -27,18 +32,24 @@ pipeline {
     //}
 
 
+
     stages {
-        stage('Build and Push Docker Image') {
+        stage('login to ECR') {
             steps {
                 echo "Login to ECR"
                 withAWS(credentials: 'ec2', region: 'us-east-1') {
+                    sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin $(ECR_URL)'
                 }
-                
+            }
+        
+    }
+        stage('Build and Push Docker Image') {
+            steps {               
                 echo "Build Docker images"
-                sh 'docker build -t ${ECR_REPO} .'
+                sh 'docker build -t ${ECR_REPO}:${COMMIT_HASH} .'
 
                 echo "Tag Docker images"
-                sh 'docker.tag(${ECR_REPO}, ${ECR_URL})'
+                sh 'docker tag ${ECR_REPO}:${COMMIT_HASH} ${ECR_URL}'
 
                 echo "Push image to ECR"
                 sh 'docker push ${ECR_URL}'
