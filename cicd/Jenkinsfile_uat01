@@ -52,7 +52,7 @@ pipeline {
             }
         }
 
-        stage() {
+        stage('Update ECS Service') {
             steps {
                 script {
                     // Generate task definition JSON file with updated image URI
