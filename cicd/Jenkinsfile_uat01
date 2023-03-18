@@ -1,7 +1,7 @@
 pipeline {
 
     agent any
-    
+
     //     docker {   
     //         image 'node:16.18.1'
     //     }  
@@ -15,7 +15,7 @@ pipeline {
         ENVIRONMENT = 'uat'
         BRANCH_UAT = 'dev'
         EC2_CREDENTIAL = 'ec2'
-        IMAGE_NAME = 'pn-server:latest'
+        ECR_REPO = 'pn-server:latest'
         TASK_DEFINITION = 'petServer'
         WORKSPACE_PATH = '/home/root/jenkins_home/workspace/test-getrepo/build'
     }
@@ -27,10 +27,13 @@ pipeline {
 
 
     stages {
-        stage('Login to ECR') {
+        stage('Build and Push Docker Image') {
             steps {
                 echo "Login to ECR"
-                sh '$(aws ecr get-login --no-include-email --region us-east-1)'
+                withAWS(credentials: 'ec2', region: 'us-east-1') {
+                // some block
+                }
+                
             }
         }
 
