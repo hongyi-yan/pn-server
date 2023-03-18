@@ -54,10 +54,10 @@ pipeline {
                 sh 'docker build -t ${ECR_IMAGE} .'
 
                 echo "Tag Docker images"
-                sh 'docker tag ${ECR_IMAGE}:latest ${ECR_URL}:latest'
+                sh 'docker tag ${ECR_IMAGE}:latest ${ECR_PASS}/${ECR_IMAGE}:latest'
 
                 echo "Push image to ECR"
-                sh 'docker push ${ECR_URL}:latest'
+                sh 'docker push ${ECR_PASS}/${ECR_IMAGE}:latest'
             }
         }
 
