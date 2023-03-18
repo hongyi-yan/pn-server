@@ -17,7 +17,7 @@ pipeline {
         ECR_IMAGE = 'pn-server'
         COMMIT_HASH = 'latest'
         ECR_PASS = '017359606234.dkr.ecr.us-east-1.amazonaws.com'
-        ECR_URL = '${ECR_PASS}/${ECR_IMAGE}'
+        ECR_URL = '$${ECR_PASS}/${ECR_IMAGE}'
         
         CLUSTER = 'petCluster01'
         SERVICE = 'petService'
@@ -54,7 +54,7 @@ pipeline {
                 sh 'docker build -t ${ECR_IMAGE} .'
 
                 echo "Tag Docker images"
-                sh 'docker tag ${ECR_IMAGE}$latest ${ECR_URL}:latest'
+                sh 'docker tag ${ECR_IMAGE}:latest ${ECR_URL}:latest'
 
                 echo "Push image to ECR"
                 sh 'docker push ${ECR_URL}:latest'
