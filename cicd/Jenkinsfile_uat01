@@ -13,15 +13,12 @@ pipeline {
 
     environment {
         ENVIRONMENT = 'uat'
+        BRANCH_UAT = 'dev'
         EC2_CREDENTIAL = 'ec2'
         AWS_REGION = 'us-east-1'
         ECR_REPO = 'pn-server'
         COMMIT_HASH = 'latest'
         ECR_URL = '017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest'
-        
-
-        BRANCH_UAT = 'dev'
-        EC2_CREDENTIAL = 'ec2'
         TASK_DEFINITION = 'petServer'
         WORKSPACE_PATH = '/home/root/jenkins_home/workspace/test-getrepo/build'
     }
