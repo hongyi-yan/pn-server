@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:16-alpine
+FROM --platform=linux/amd64 node:16.19-alpine
 
 # install Node.js and the npm package manager on an Alpine Linux system using the package manager apk
 RUN apk add --no-cache nodejs npm
@@ -15,8 +15,6 @@ RUN npm i
 
 # Copy the rest of the application code to the container
 COPY . .
-
-COPY .env pn-server-backend/.env
 
 # remove bcrypt package
 RUN npm uninstall bcrypt
