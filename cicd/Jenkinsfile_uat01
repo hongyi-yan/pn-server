@@ -51,15 +51,13 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {               
                 echo "Build Docker images"
-                sh 'docker build -t ${ECR_IMAGE} .'
+                sh 'docker build -t ${ECR_IMAGE}:latest .'
 
                 echo "Tag Docker images"
-                docker tag pn-server:latest 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest
-                //sh 'docker tag ${ECR_IMAGE}:"latest ${ECR_URL}:latest'
+                sh 'docker tag ${ECR_IMAGE}:"latest ${ECR_URL}:latest'
 
                 echo "Push image to ECR"
-                docker push 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest
-                //sh 'docker push ${ECR_URL}:latest'
+                sh 'docker push ${ECR_URL}:latest'
             }
         }
 
