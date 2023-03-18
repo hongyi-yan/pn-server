@@ -33,7 +33,7 @@ pipeline {
         stage('login to ECR') {
             steps {
                 echo "Login to ECR"
-                withAWS(credentials: 'ec2', region: 'us-east-1') {
+                withAWS(credentials: 's3', region: 'us-east-1') {
                     sh 'aws ecr get-login-password --region ${AWS_REGION}'
                 }
             }
