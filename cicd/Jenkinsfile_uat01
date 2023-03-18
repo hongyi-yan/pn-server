@@ -56,9 +56,9 @@ pipeline {
             steps {
                 script {
                     // Generate task definition JSON file with updated image URI
-                    sh "printf '[{"name":"petServer","imageUri":"%s"}] ${ECR_URL}/${ECR_REPO}:${COMMIT_HASH}" > imagedefinitions.json"
+                    sh "printf '[{"name":"petServer","imageUri":"%s"}] ${ECR_URL}/${ECR_REPO}:${COMMIT_HASH}" > imagedefinitions.json"]'
 
-                    // Update ECS task definition with new image URI
+                    
                     withAWS(credentials: 'ec2', region: 'us-east-1') {
                         sh "aws ecs register-task-definition --family ${TASK_DEFINITION} --container-definitions file://imagedefinitions.json"
                     }
