@@ -54,7 +54,7 @@ pipeline {
                 sh 'docker build -t ${ECR_IMAGE}:latest .'
 
                 echo "Tag Docker images"
-                sh 'docker tag ${ECR_IMAGE}:latest 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest'
+                sh 'docker tag ${ECR_IMAGE}:latest $(ECR_URL):latest'
 
                 echo "Push image to ECR"
                 sh 'docker push 017359606234.dkr.ecr.us-east-1.amazonaws.com/pn-server:latest'
